@@ -6,6 +6,7 @@ cap = cv2.VideoCapture(0)
 hand_detector=mp.solutions.hands.Hands()
 drawing_utils=mp.solutions.drawing_utils
 screen_width,screen_height=pyautogui.size()
+index_y=0
 while True:
     _, frame = cap.read()
     frame = cv2.flip(frame, 1)
@@ -22,6 +23,15 @@ while True:
                 y=int(landmark.y * frame_height)
                 if id==8:
                     cv2.circle(img=frame,center=(x,y),radius=10,color=(0,255,255))
+                    index_x=screen_width/frame_width*x
+                    index_y=screen_height/frame_height*y
                     pyautogui.moveTo(x,y)
+                if id == 4:
+                    cv2.circle(img=frame, center=(x, y), radius=10, color=(0, 255, 255))
+                    thumbs_x = screen_width / frame_width * x
+                    thumbs_y = screen_height / frame_height * y
+                    print('outside',abs(abs(index_y-thumbs_y)))
+                    if abs(index_y-thumbs_y)<20:
+                        print('click')
     cv2.imshow('Virtual Mouse',frame)
     cv2.waitKey(1)
